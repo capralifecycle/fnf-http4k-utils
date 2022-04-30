@@ -14,6 +14,7 @@
         <major-version>1</major-version>
         <revision>${major-version}.local-SNAPSHOT</revision>
         <kotlin.version>1.6.21</kotlin.version>
+        <ktlint-maven-plugin.version>1.13.1</ktlint-maven-plugin.version>
     </properties>
     <scm>
         <developerConnection>scm:git:https://github.com/capralifecycle/liflig-http4k-utils.git</developerConnection>
@@ -56,6 +57,19 @@
                         <phase>clean</phase>
                         <goals>
                             <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.gantsign.maven</groupId>
+                <artifactId>ktlint-maven-plugin</artifactId>
+                <version>${ktlint-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>check</id>
+                        <goals>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>

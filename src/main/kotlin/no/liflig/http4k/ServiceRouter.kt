@@ -26,7 +26,7 @@ import java.util.UUID
  * This encapsulates the basic router setup for all of our services so that
  * they handle requests similarly.
  */
-class ServiceRouter<P, PL:PrincipalLog>(
+class ServiceRouter<P, PL : PrincipalLog>(
     logHandler: (RequestResponseLog<PL>) -> Unit,
     principalToLog: (P) -> PL,
     corsPolicy: CorsPolicy?,

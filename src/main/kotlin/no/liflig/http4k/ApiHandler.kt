@@ -25,7 +25,6 @@ class ApiHandler<P>(
             ?.right()
             ?: notAuthenticated().left()
 
-
     private fun Either<ErrorResponse, Response>.handleError(request: Request): Response =
         getOrHandle {
             if (it.throwable != null) {
