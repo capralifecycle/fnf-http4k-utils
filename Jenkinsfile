@@ -7,5 +7,5 @@ simpleMavenLibPipeline(
   buildConfigParams: [
     slack: [channel: "#fnf-feed"],
   ],
-  dockerBuildImage: toolImageDockerReference('maven:3-jdk-17-alpine')
+  dockerBuildImage: toolImageDockerReference('maven:3-jdk-11-alpine')
 )
