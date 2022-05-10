@@ -25,7 +25,6 @@ object PrincipalFilter {
                 .fold(
                     principalDeviationToResponse
                 ) {
-                    logger.info { "User $it" }
                     next(req.with(principalLens of it))
                 }
         }
