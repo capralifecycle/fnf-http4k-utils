@@ -24,7 +24,14 @@ fun Response.asErrorResponse(throwable: Throwable? = null): ErrorResponse =
     ErrorResponse(
         this,
         // Copy the message to help viewing logs.
-        RuntimeException(throwable?.message, throwable)
+        RuntimeException(
+            throwable.let {
+                if (it != null)
+                    it.message else
+                    "This exception is only for providing a stacktrace. No exception was thrown"
+            },
+            throwable
+        )
     )
 
 /**
