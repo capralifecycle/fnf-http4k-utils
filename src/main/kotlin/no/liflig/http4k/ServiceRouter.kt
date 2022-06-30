@@ -13,6 +13,7 @@ import no.liflig.logging.http4k.LoggingFilter
 import no.liflig.logging.http4k.RequestIdMdcFilter
 import no.liflig.logging.http4k.RequestLensFailureFilter
 import org.http4k.contract.JsonErrorResponseRenderer
+import org.http4k.core.Filter
 import org.http4k.core.Request
 import org.http4k.core.RequestContexts
 import org.http4k.core.Response
@@ -82,12 +83,27 @@ class ServiceRouter<P, PL : PrincipalLog>(
             .then(RequestLensFailureFilter(errorResponseRenderer))
             .then(PrincipalFilter(principalLens, authService, principalDeviationToResponse))
 
-    fun with(funk: ServiceRouter<P, PL>.() -> RoutingHttpHandler) =
-        coreFilters.then(
-            if (healthService != null)
-                routes(funk(), health(healthService))
-            else {
-                funk()
-            }
+    class RoutingBuilder<P>(
+        val apiHandler: ApiHandler<P>,
+        val errorResponseRenderer: ErrorResponseRendererWithLogging
+    ) {
+        val additionalFilters = org.http4k.util.Appendable<Filter>()
+        val routes = org.http4k.util.Appendable<RoutingHttpHandler>()
+    }
+
+    fun routingHandler(funk: RoutingBuilder<P>.() -> Unit): RoutingHttpHandler {
+        val builder = RoutingBuilder(handler, errorResponseRenderer)
+        builder.funk()
+
+        var current = coreFilters
+        builder.additionalFilters.all.forEach {
+            current = current.then(it)
+        }
+
+        val routes = builder.routes.all + listOfNotNull(healthService?.let { health(it) })
+
+        return current.then(
+            routes(*(routes).toTypedArray())
         )
+    }
 }
