@@ -1,5 +1,7 @@
 package no.liflig.http4k
 
+import no.liflig.http4k.health.HealthService
+import no.liflig.http4k.health.health
 import no.liflig.logging.ErrorLog
 import no.liflig.logging.NormalizedStatus
 import no.liflig.logging.PrincipalLog
@@ -20,6 +22,8 @@ import org.http4k.filter.CorsPolicy
 import org.http4k.filter.ServerFilters
 import org.http4k.format.Jackson
 import org.http4k.lens.RequestContextKey
+import org.http4k.routing.RoutingHttpHandler
+import org.http4k.routing.routes
 import java.util.UUID
 
 /**
@@ -31,6 +35,7 @@ class ServiceRouter<P, PL : PrincipalLog>(
     principalToLog: (P) -> PL,
     corsPolicy: CorsPolicy?,
     authService: AuthService<P>,
+    private val healthService: HealthService? = null,
     principalDeviationToResponse: (GetPrincipalDeviation) -> Response,
 ) {
     val contexts = RequestContexts()
@@ -76,4 +81,13 @@ class ServiceRouter<P, PL : PrincipalLog>(
             .then(ErrorHandlerFilter(errorLogLens))
             .then(RequestLensFailureFilter(errorResponseRenderer))
             .then(PrincipalFilter(principalLens, authService, principalDeviationToResponse))
+
+    fun with(funk: ServiceRouter<P, PL>.() -> RoutingHttpHandler) =
+        coreFilters.then(
+            if (healthService != null)
+                routes(funk(), health(healthService))
+            else {
+                funk()
+            }
+        )
 }
