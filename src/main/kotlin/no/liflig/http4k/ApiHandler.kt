@@ -17,7 +17,7 @@ import org.http4k.lens.BiDiLens
 
 class ApiHandler<P>(
     private val principalLens: BiDiLens<Request, P?>,
-    private val errorToContext: (Request, Throwable) -> Unit
+    private val errorToContext: (Request, Throwable) -> Unit,
 ) {
     private val Request.principal: P? get() = principalLens(this)
     private fun P?.orUserNotAuthenticatedResponse(): Either<ErrorResponse, P> =
@@ -37,7 +37,7 @@ class ApiHandler<P>(
      * Request handler that runs the request in a coroutine.
      */
     private fun coroutineHandler(
-        block: suspend CoroutineScope.(request: Request) -> Response
+        block: suspend CoroutineScope.(request: Request) -> Response,
     ): HttpHandler =
         { request ->
             runBlocking(CoroutineName("no/liflig/http4k") + MDCContext()) {
@@ -56,7 +56,7 @@ class ApiHandler<P>(
         block: suspend EitherEffect<ErrorResponse, *>.(
             request: Request,
             principal: P?,
-        ) -> Response
+        ) -> Response,
     ): HttpHandler =
         coroutineHandler { request ->
             either<ErrorResponse, Response> {
@@ -74,8 +74,8 @@ class ApiHandler<P>(
     fun authed(
         block: suspend EitherEffect<ErrorResponse, *>.(
             request: Request,
-            principal: P
-        ) -> Response
+            principal: P,
+        ) -> Response,
     ): HttpHandler =
         // Auth is checked inside.
         authNotChecked { request, principal ->

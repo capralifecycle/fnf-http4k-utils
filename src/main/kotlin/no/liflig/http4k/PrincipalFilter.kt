@@ -16,7 +16,7 @@ object PrincipalFilter {
     operator fun <P> invoke(
         principalLens: BiDiLens<Request, P?>,
         authService: AuthService<P>,
-        principalDeviationToResponse: (GetPrincipalDeviation) -> Response
+        principalDeviationToResponse: (GetPrincipalDeviation) -> Response,
     ): Filter = Filter { next ->
         { req ->
             runBlocking(CoroutineName("no/liflig/http4k") + MDCContext()) {

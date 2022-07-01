@@ -26,9 +26,11 @@ fun Response.asErrorResponse(throwable: Throwable? = null): ErrorResponse =
         // Copy the message to help viewing logs.
         RuntimeException(
             throwable.let {
-                if (it != null)
-                    it.message else
+                if (it != null) {
+                    it.message
+                } else {
                     "This exception is only for providing a stacktrace. No exception was thrown"
+                }
             },
             throwable
         )
@@ -138,7 +140,7 @@ suspend fun EitherEffect<ErrorResponse, *>.badUserInputBind(
 @ExperimentalContracts
 suspend fun EitherEffect<ErrorResponse, *>.checkInput(
     value: Boolean,
-    lazyMessage: () -> String
+    lazyMessage: () -> String,
 ) {
     contract {
         returns() implies value
