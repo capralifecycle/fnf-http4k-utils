@@ -31,7 +31,7 @@ data class HealthStatus(
     val name: String,
     val timestamp: Instant,
     val runningSince: Instant,
-    val build: HealthBuildInfo
+    val build: HealthBuildInfo,
 )
 
 @Serializable
@@ -42,5 +42,5 @@ data class HealthBuildInfo(
     val timestamp: Instant?,
     val commit: String,
     val branch: String,
-    val number: Int
+    val number: Int,
 )

@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit
 
 class HealthService(
     private val name: String,
-    private val buildInfo: HealthBuildInfo
+    private val buildInfo: HealthBuildInfo,
 ) {
 
     private val runningSince: Instant = getRunningSince()

@@ -1,0 +1,11 @@
+# http://editorconfig.org
+
+root = true
+
+[*]
+trim_trailing_whitespace = true
+ij_kotlin_allow_trailing_comma = true
+
+[*.md]
+# Markdown uses double trailing whitespaces as special chars to force newlines
+trim_trailing_whitespace = false

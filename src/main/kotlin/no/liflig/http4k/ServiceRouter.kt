@@ -48,7 +48,7 @@ class ServiceRouter<P, PL : PrincipalLog>(
     val errorResponseRenderer = ErrorResponseRendererWithLogging(
         errorLogLens,
         normalizedStatusLens,
-        JsonErrorResponseRenderer(Jackson),
+        JsonErrorResponseRenderer(Jackson)
     )
 
     val errorToContext: (Request, Throwable) -> Unit = { request, throwable ->
@@ -72,7 +72,7 @@ class ServiceRouter<P, PL : PrincipalLog>(
                     errorLogLens,
                     normalizedStatusLens,
                     requestIdChainLens,
-                    logHandler,
+                    logHandler
                 )
             )
             .let {
@@ -85,7 +85,7 @@ class ServiceRouter<P, PL : PrincipalLog>(
 
     class RoutingBuilder<P>(
         val apiHandler: ApiHandler<P>,
-        val errorResponseRenderer: ErrorResponseRendererWithLogging
+        val errorResponseRenderer: ErrorResponseRendererWithLogging,
     ) {
         val additionalFilters = org.http4k.util.Appendable<Filter>()
         val routes = org.http4k.util.Appendable<RoutingHttpHandler>()
