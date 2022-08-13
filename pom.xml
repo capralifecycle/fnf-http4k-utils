@@ -152,7 +152,7 @@
         <dependency>
             <groupId>no.liflig</groupId>
             <artifactId>liflig-logging-http4k</artifactId>
-            <version>1.20220804.134939</version>
+            <version>1.20220813.124050</version>
         </dependency>
         <dependency>
             <groupId>org.http4k</groupId>
