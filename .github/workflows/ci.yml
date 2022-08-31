@@ -75,7 +75,7 @@ jobs:
           if [ "$release" = "true" ]; then
             # Release to Nexus
             mvn -B source:jar deploy scm:tag -Drevision="$tag" -Dtag="$tag"
-            # Release to GitHub Packages
+            # Release to Github Packages
             mvn deploy -DaltReleaseDeploymentRepository="github::default::https://maven.pkg.github.com/capralifecycle/liflig-http4k-utils" -Drevision="$tag" -Dtag="$tag"
           else
             mvn -B source:jar verify -Drevision="$tag" -Dtag="$tag"
