@@ -7,6 +7,7 @@ import arrow.core.left
 import arrow.core.right
 import org.http4k.core.Response
 import org.http4k.core.Status
+import org.http4k.core.with
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -15,14 +16,23 @@ import kotlin.contracts.contract
  */
 data class ErrorResponse(val response: Response, val throwable: Throwable?)
 
+@kotlinx.serialization.Serializable
+class ErrorMessage(
+    val message: String,
+) {
+    companion object {
+        val bodyLens by lazy { createBodyLens(serializer()) }
+    }
+}
+
 /**
  * Create a [ErrorResponse] based on a [Response] while also
  * wrapping or creating a new exception to attach a stack trace to be
  * able to track to the code location this happened in logs.
  */
-fun Response.asErrorResponse(throwable: Throwable? = null): ErrorResponse =
+fun Response.asErrorResponse(throwable: Throwable? = null, message: String? = null): ErrorResponse =
     ErrorResponse(
-        this,
+        if (message != null) this.with(ErrorMessage.bodyLens of ErrorMessage(message)) else this,
         // Copy the message to help viewing logs.
         RuntimeException(
             throwable.let {
@@ -74,52 +84,48 @@ fun <T> Either<ErrorResponse, T?>.expectValue(): Either<ErrorResponse, T> =
 /**
  * Create a [ErrorResponse] for an unrecoverable internal server error.
  */
-fun internalServiceError(throwable: Throwable? = null): ErrorResponse =
-    Response(Status.INTERNAL_SERVER_ERROR).asErrorResponse(throwable)
+fun internalServiceError(throwable: Throwable? = null, message: String? = null): ErrorResponse =
+    Response(Status.INTERNAL_SERVER_ERROR).asErrorResponse(throwable, message)
 
 /**
  * Create a [ErrorResponse] for the service being unavailable.
  */
-fun serviceUnavailable(throwable: Throwable? = null): ErrorResponse =
-    Response(Status.SERVICE_UNAVAILABLE).asErrorResponse(throwable)
+fun serviceUnavailable(throwable: Throwable? = null, message: String? = null): ErrorResponse =
+    Response(Status.SERVICE_UNAVAILABLE).asErrorResponse(throwable, message)
 
 /**
  * Create a [ErrorResponse] for a forbidden operation (user is not authorized).
  */
-fun forbidden(throwable: Throwable? = null): ErrorResponse =
-    Response(Status.FORBIDDEN).asErrorResponse(throwable)
+fun forbidden(throwable: Throwable? = null, message: String? = null): ErrorResponse =
+    Response(Status.FORBIDDEN)
+        .asErrorResponse(throwable, message)
 
 /**
  * Create a [ErrorResponse] for a not found resource.
  */
-fun notFound(throwable: Throwable? = null): ErrorResponse =
-    Response(Status.NOT_FOUND).asErrorResponse(throwable)
+fun notFound(throwable: Throwable? = null, message: String? = null): ErrorResponse =
+    Response(Status.NOT_FOUND).asErrorResponse(throwable, message)
 
 /**
  * Create a [ErrorResponse] for a conflicting resource.
  */
-fun conflict(throwable: Throwable? = null): ErrorResponse =
-    Response(Status.CONFLICT).asErrorResponse(throwable)
+fun conflict(throwable: Throwable? = null, message: String? = null): ErrorResponse =
+    Response(Status.CONFLICT).asErrorResponse(throwable, message)
 
 /**
  * Create a [ErrorResponse] for the user not being authenticated.
  */
-fun notAuthenticated(throwable: Throwable? = null): ErrorResponse =
-    Response(Status.UNAUTHORIZED).asErrorResponse(throwable)
+fun notAuthenticated(throwable: Throwable? = null, message: String? = null): ErrorResponse =
+    Response(Status.UNAUTHORIZED).asErrorResponse(throwable, message)
 
 /**
  * Create a [ErrorResponse] for bad user input.
  */
 fun badUserInput(
-    userMessage: String? = null,
+    message: String? = null,
     throwable: Throwable? = null,
 ): ErrorResponse = Response(Status.BAD_REQUEST)
-    .let {
-        // TODO: Should the response be structured somehow?
-        if (userMessage != null) it.body(userMessage)
-        else it
-    }
-    .asErrorResponse(throwable)
+    .asErrorResponse(throwable, message)
 
 /**
  * Create a [ErrorResponse] for bad user input and bind it.
