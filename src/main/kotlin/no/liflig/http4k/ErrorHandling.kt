@@ -1,7 +1,7 @@
 package no.liflig.http4k
 
 import arrow.core.Either
-import arrow.core.computations.EitherEffect
+import arrow.core.continuations.EffectScope
 import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
@@ -132,7 +132,7 @@ fun badUserInput(
  *
  * Convenience to simplify handlers.
  */
-suspend fun EitherEffect<ErrorResponse, *>.badUserInputBind(
+suspend fun EffectScope<ErrorResponse>.badUserInputBind(
     userMessage: String,
     throwable: Throwable? = null,
 ): Nothing {
@@ -144,7 +144,7 @@ suspend fun EitherEffect<ErrorResponse, *>.badUserInputBind(
  * Bind a BAD_REQUEST in case the check fails.
  */
 @ExperimentalContracts
-suspend fun EitherEffect<ErrorResponse, *>.checkInput(
+suspend fun EffectScope<ErrorResponse>.checkInput(
     value: Boolean,
     lazyMessage: () -> String,
 ) {

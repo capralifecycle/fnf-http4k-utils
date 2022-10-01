@@ -1,8 +1,7 @@
 package no.liflig.http4k
 
 import arrow.core.Either
-import arrow.core.computations.EitherEffect
-import arrow.core.computations.either
+import arrow.core.continuations.EffectScope
 import arrow.core.getOrHandle
 import arrow.core.left
 import arrow.core.right
@@ -53,13 +52,13 @@ class ApiHandler<P>(
      * by running the request in a coroutine so we can use suspending code.
      */
     fun authNotChecked(
-        block: suspend EitherEffect<ErrorResponse, *>.(
+        block: suspend EffectScope<ErrorResponse>.(
             request: Request,
             principal: P?,
         ) -> Response,
     ): HttpHandler =
         coroutineHandler { request ->
-            either<ErrorResponse, Response> {
+            arrow.core.continuations.either {
                 block(request, request.principal)
             }.handleError(request)
         }
@@ -72,7 +71,7 @@ class ApiHandler<P>(
      * by running the request in a coroutine so we can use suspending code.
      */
     fun authed(
-        block: suspend EitherEffect<ErrorResponse, *>.(
+        block: suspend EffectScope<ErrorResponse>.(
             request: Request,
             principal: P,
         ) -> Response,
