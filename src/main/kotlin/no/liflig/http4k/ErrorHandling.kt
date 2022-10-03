@@ -42,8 +42,8 @@ fun Response.asErrorResponse(throwable: Throwable? = null, message: String? = nu
                     "This exception is only for providing a stacktrace. No exception was thrown"
                 }
             },
-            throwable
-        )
+            throwable,
+        ),
     )
 
 /**

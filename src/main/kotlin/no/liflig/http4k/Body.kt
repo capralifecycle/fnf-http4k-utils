@@ -30,7 +30,7 @@ inline fun <reified T : Any> createBodyLens(serializer: KSerializer<T>): BiDiBod
         .string(ContentType.APPLICATION_JSON)
         .map(
             { json.decodeFromString(serializer, it) },
-            { json.encodeToString(serializer, it) }
+            { json.encodeToString(serializer, it) },
         )
         .toLens()
 }
@@ -38,6 +38,6 @@ inline fun <reified T : Any> createBodyLens(serializer: KSerializer<T>): BiDiBod
 inline fun <reified T : Any> createListBodyLens() =
     httpBodyLens(null, ContentNegotiation.None, ContentType.APPLICATION_JSON).map(
         { json.decodeFromString<List<T>>(it) },
-        { json.encodeToString(it) }
+        { json.encodeToString(it) },
     )
         .toLens()
