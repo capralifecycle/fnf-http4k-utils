@@ -23,7 +23,7 @@ object PrincipalFilter {
                 authService.getPrincipal(req)
             }
                 .fold(
-                    principalDeviationToResponse
+                    principalDeviationToResponse,
                 ) {
                     next(req.with(principalLens of it))
                 }

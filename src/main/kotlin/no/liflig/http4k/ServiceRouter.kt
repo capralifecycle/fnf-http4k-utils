@@ -48,7 +48,7 @@ class ServiceRouter<P, PL : PrincipalLog>(
     val errorResponseRenderer = ErrorResponseRendererWithLogging(
         errorLogLens,
         normalizedStatusLens,
-        JsonErrorResponseRenderer(Jackson)
+        JsonErrorResponseRenderer(Jackson),
     )
 
     val errorToContext: (Request, Throwable) -> Unit = { request, throwable ->
@@ -72,8 +72,8 @@ class ServiceRouter<P, PL : PrincipalLog>(
                     errorLogLens,
                     normalizedStatusLens,
                     requestIdChainLens,
-                    logHandler
-                )
+                    logHandler,
+                ),
             )
             .let {
                 if (corsPolicy != null) it.then(ServerFilters.Cors(corsPolicy))
@@ -103,7 +103,7 @@ class ServiceRouter<P, PL : PrincipalLog>(
         val routes = builder.routes.all + listOfNotNull(healthService?.let { health(it) })
 
         return current.then(
-            routes(*(routes).toTypedArray())
+            routes(*(routes).toTypedArray()),
         )
     }
 }

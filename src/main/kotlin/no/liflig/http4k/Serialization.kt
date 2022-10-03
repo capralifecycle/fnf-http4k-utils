@@ -13,7 +13,7 @@ fun <T, OUT> AutoMappingConfiguration<T>.withPreregisteredIdMappings(idMappers: 
 inline fun <reified T> createUUIDMapper(crossinline factory: (UUID) -> T) =
     BiDiMapping<String, T>(
         { factory(UUID.fromString(it)) },
-        { it.toString() }
+        { it.toString() },
     )
 
 fun <T> createUUIDPathLens(name: String, factory: (UUID) -> T): BiDiPathLens<T> =

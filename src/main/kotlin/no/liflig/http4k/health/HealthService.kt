@@ -15,7 +15,7 @@ class HealthService(
         name = name,
         timestamp = Instant.now(),
         runningSince = runningSince,
-        build = buildInfo
+        build = buildInfo,
     )
 
     private fun getRunningSince(): Instant {

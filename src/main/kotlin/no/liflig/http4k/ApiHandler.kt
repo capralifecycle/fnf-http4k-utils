@@ -80,7 +80,7 @@ class ApiHandler<P>(
         authNotChecked { request, principal ->
             block(
                 request,
-                principal.orUserNotAuthenticatedResponse().bind()
+                principal.orUserNotAuthenticatedResponse().bind(),
             )
         }
 }
