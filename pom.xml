@@ -150,7 +150,7 @@
             <dependency>
                 <groupId>org.http4k</groupId>
                 <artifactId>http4k-bom</artifactId>
-                <version>4.34.0.4</version>
+                <version>4.34.1.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -175,7 +175,7 @@
         <dependency>
             <groupId>org.http4k</groupId>
             <artifactId>http4k-contract</artifactId>
-            <version>4.34.0.4</version>
+            <version>4.34.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.http4k</groupId>
