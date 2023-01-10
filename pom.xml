@@ -22,16 +22,6 @@
         <url>https://github.com/capralifecycle/liflig-http4k-utils</url>
         <tag>HEAD</tag>
     </scm>
-    <distributionManagement>
-        <repository>
-            <id>capra-releases</id>
-            <url>https://mvnrepo.capraconsulting.no/content/repositories/capra-releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>capra-snapshots</id>
-            <url>https://mvnrepo.capraconsulting.no/content/repositories/capra-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
@@ -122,26 +112,8 @@
 
     <repositories>
         <repository>
-            <id>fnf-releases</id>
-            <name>FNF Release Repository</name>
-            <url>https://mvnrepo.capraconsulting.no/content/repositories/fnf-releases</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>fnf-snapshots</id>
-            <name>FNF Snapshot Repository</name>
-            <url>https://mvnrepo.capraconsulting.no/content/repositories/fnf-snapshots</url>
-        </repository>
-
-        <repository>
-            <id>capra-releases</id>
-            <name>Capra/Liflig Release Repository</name>
-            <url>https://mvnrepo.capraconsulting.no/content/repositories/capra-releases</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/capralifecycle/*</url>
         </repository>
     </repositories>
 
