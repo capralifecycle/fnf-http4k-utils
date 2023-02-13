@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>no.liflig</groupId>
-    <artifactId>liflig-http4k-utils</artifactId>
+    <artifactId>fnf-http4k-utils</artifactId>
     <packaging>jar</packaging>
     <version>${revision}</version>
 
