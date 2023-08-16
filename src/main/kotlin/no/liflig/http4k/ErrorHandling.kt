@@ -1,9 +1,9 @@
 package no.liflig.http4k
 
 import arrow.core.Either
-import arrow.core.continuations.EffectScope
 import arrow.core.flatMap
 import arrow.core.left
+import arrow.core.raise.Raise
 import arrow.core.right
 import org.http4k.core.Response
 import org.http4k.core.Status
@@ -132,7 +132,7 @@ fun badUserInput(
  *
  * Convenience to simplify handlers.
  */
-suspend fun EffectScope<ErrorResponse>.badUserInputBind(
+suspend fun Raise<ErrorResponse>.badUserInputBind(
     userMessage: String,
     throwable: Throwable? = null,
 ): Nothing {
@@ -144,7 +144,7 @@ suspend fun EffectScope<ErrorResponse>.badUserInputBind(
  * Bind a BAD_REQUEST in case the check fails.
  */
 @ExperimentalContracts
-suspend fun EffectScope<ErrorResponse>.checkInput(
+suspend fun Raise<ErrorResponse>.checkInput(
     value: Boolean,
     lazyMessage: () -> String,
 ) {

@@ -1,9 +1,10 @@
 package no.liflig.http4k
 
 import arrow.core.Either
-import arrow.core.continuations.EffectScope
 import arrow.core.getOrHandle
 import arrow.core.left
+import arrow.core.raise.Raise
+import arrow.core.raise.either
 import arrow.core.right
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -52,13 +53,13 @@ class ApiHandler<P>(
      * by running the request in a coroutine so we can use suspending code.
      */
     fun authNotChecked(
-        block: suspend EffectScope<ErrorResponse>.(
+        block: suspend Raise<ErrorResponse>.(
             request: Request,
             principal: P?,
         ) -> Response,
     ): HttpHandler =
         coroutineHandler { request ->
-            arrow.core.continuations.either {
+            either {
                 block(request, request.principal)
             }.handleError(request)
         }
@@ -71,7 +72,7 @@ class ApiHandler<P>(
      * by running the request in a coroutine so we can use suspending code.
      */
     fun authed(
-        block: suspend EffectScope<ErrorResponse>.(
+        block: suspend Raise<ErrorResponse>.(
             request: Request,
             principal: P,
         ) -> Response,
