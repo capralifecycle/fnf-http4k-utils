@@ -42,5 +42,5 @@ data class HealthBuildInfo(
     val timestamp: Instant?,
     val commit: String,
     val branch: String,
-    val number: Int,
+    val number: Long,
 )
