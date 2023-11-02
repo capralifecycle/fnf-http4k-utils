@@ -13,7 +13,7 @@
         <!-- Increment major version for breaking changes -->
         <major-version>1</major-version>
         <revision>${major-version}.local-SNAPSHOT</revision>
-        <kotlin.version>1.8.22</kotlin.version>
+        <kotlin.version>1.9.20</kotlin.version>
         <ktlint-maven-plugin.version>1.16.0</ktlint-maven-plugin.version>
     </properties>
     <scm>
