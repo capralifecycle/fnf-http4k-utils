@@ -1,3 +1,4 @@
+> This repository was archived during handover to a new maintainer
 # liflig-http4k-utils
 
 Kotlin library that provides a `ServiceRouter` for setting up the recommended http4k filters         
